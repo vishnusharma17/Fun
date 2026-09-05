@@ -9,7 +9,6 @@ import {
   PlusSquare,
   ShieldAlert,
   Sparkles,
-  User as UserIcon,
 } from 'lucide-react';
 import UploadModal from './UploadModal';
 
@@ -25,20 +24,20 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#09090b]/80 border-b border-zinc-800/80">
+      <header className="sticky top-0 z-50 glass-panel border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/battle" className="flex items-center gap-2 group">
-            <div className="p-2 rounded-xl bg-gradient-to-tr from-violet-600 via-fuchsia-500 to-cyan-400 group-hover:scale-105 transition-transform duration-200">
+          <Link href="/battle" className="flex items-center gap-2.5 group">
+            <div className="p-2 rounded-xl bg-gradient-to-tr from-violet-600 via-fuchsia-500 to-cyan-400 group-hover:scale-105 transition-transform duration-300 neon-glow-fuchsia">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <span className="font-extrabold text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400">
-              VIBE<span className="text-fuchsia-500">CLASH</span>
+            <span className="font-black text-2xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-fuchsia-200">
+              VIBE<span className="text-fuchsia-500 font-black">CLASH</span>
             </span>
           </Link>
 
           {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1 bg-zinc-900/60 p-1.5 rounded-full border border-zinc-800/80">
+          <nav className="hidden md:flex items-center gap-1.5 bg-zinc-950/80 p-1.5 rounded-full border border-white/10 shadow-inner">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = pathname === link.href;
@@ -47,10 +46,10 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
                     isActive
-                      ? 'bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg shadow-fuchsia-500/20'
-                      : 'text-zinc-400 hover:text-white hover:bg-zinc-800/50'
+                      ? 'bg-gradient-to-r from-violet-600 via-fuchsia-600 to-pink-500 text-white shadow-lg neon-glow-fuchsia'
+                      : 'text-zinc-400 hover:text-white hover:bg-white/5'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -60,11 +59,11 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Action Button & User Profile */}
+          {/* Action Button */}
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsUploadOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-fuchsia-600 to-cyan-500 hover:from-fuchsia-500 hover:to-cyan-400 transition-all shadow-md shadow-fuchsia-500/20 active:scale-95"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-extrabold uppercase tracking-wider text-white bg-gradient-to-r from-fuchsia-600 via-pink-500 to-cyan-500 hover:brightness-110 transition-all shadow-lg neon-glow-violet active:scale-95"
             >
               <PlusSquare className="w-4 h-4" />
               <span>Post Vibe</span>
@@ -74,7 +73,7 @@ export default function Navbar() {
       </header>
 
       {/* Mobile Bottom Navigation Bar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#09090b]/90 backdrop-blur-xl border-t border-zinc-800/80 px-4 py-2 flex justify-around items-center">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 glass-panel border-t border-white/10 px-4 py-2.5 flex justify-around items-center">
         {navLinks.map((link) => {
           const Icon = link.icon;
           const isActive = pathname === link.href;
@@ -83,8 +82,8 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`flex flex-col items-center gap-1 p-2 rounded-lg text-xs font-medium ${
-                isActive ? 'text-fuchsia-400' : 'text-zinc-400'
+              className={`flex flex-col items-center gap-1 p-2 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all ${
+                isActive ? 'text-fuchsia-400 bg-fuchsia-500/10' : 'text-zinc-400'
               }`}
             >
               <Icon className="w-5 h-5" />

@@ -72,3 +72,35 @@ prisma:query SELECT COUNT(*) FROM (SELECT `main`.`Post`.`id` FROM `main`.`Post` 
 prisma:query SELECT `main`.`SiteVisit`.`id`, `main`.`SiteVisit`.`ipAddress`, `main`.`SiteVisit`.`createdAt` FROM `main`.`SiteVisit` WHERE 1=1 ORDER BY `main`.`SiteVisit`.`createdAt` DESC LIMIT ? OFFSET ?
 prisma:query INSERT INTO `main`.`SiteVisit` (`id`, `ipAddress`, `createdAt`) VALUES (?,?,?) RETURNING `id` AS `id`, `ipAddress` AS `ipAddress`, `createdAt` AS `createdAt`
  GET /admin 200 in 770ms (next.js: 385ms, application-code: 385ms)
+prisma:query SELECT 1
+ GET /battle 200 in 364ms (next.js: 50ms, application-code: 313ms)
+prisma:query INSERT INTO `main`.`SiteVisit` (`id`, `ipAddress`, `createdAt`) VALUES (?,?,?) RETURNING `id` AS `id`, `ipAddress` AS `ipAddress`, `createdAt` AS `createdAt`
+prisma:query SELECT COUNT(*) FROM (SELECT `main`.`Post`.`id` FROM `main`.`Post` WHERE 1=1 LIMIT ? OFFSET ?) AS `sub`
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE 1=1 ORDER BY `main`.`Post`.`id` ASC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`username`, `main`.`User`.`image` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE 1=1 ORDER BY `main`.`Post`.`id` ASC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`username`, `main`.`User`.`image` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
+ POST /battle 200 in 72ms (next.js: 13ms, application-code: 58ms)
+  └─ ƒ getRandomPair() in 38ms src/actions/battle.ts
+prisma:query SELECT COUNT(*) FROM (SELECT `main`.`Post`.`id` FROM `main`.`Post` WHERE 1=1 LIMIT ? OFFSET ?) AS `sub`
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE 1=1 LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`username`, `main`.`User`.`image` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE 1=1 ORDER BY `main`.`Post`.`id` ASC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`username`, `main`.`User`.`image` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
+ POST /battle 200 in 41ms (next.js: 12ms, application-code: 29ms)
+  └─ ƒ getRandomPair() in 13ms src/actions/battle.ts
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE 1=1 ORDER BY `main`.`Post`.`eloRating` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`username`, `main`.`User`.`image` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?,?,?) LIMIT ? OFFSET ?
+prisma:query INSERT INTO `main`.`SiteVisit` (`id`, `ipAddress`, `createdAt`) VALUES (?,?,?) RETURNING `id` AS `id`, `ipAddress` AS `ipAddress`, `createdAt` AS `createdAt`
+ GET /leaderboard 200 in 379ms (next.js: 16ms, application-code: 363ms)
+prisma:query SELECT COUNT(*) FROM (SELECT `main`.`SiteVisit`.`id` FROM `main`.`SiteVisit` WHERE 1=1 LIMIT ? OFFSET ?) AS `sub`
+prisma:query SELECT COUNT(*) FROM (SELECT `main`.`User`.`id` FROM `main`.`User` WHERE 1=1 LIMIT ? OFFSET ?) AS `sub`
+prisma:query SELECT COUNT(*) FROM (SELECT `main`.`Vote`.`id` FROM `main`.`Vote` WHERE 1=1 LIMIT ? OFFSET ?) AS `sub`
+prisma:query SELECT COUNT(*) FROM (SELECT `main`.`Post`.`id` FROM `main`.`Post` WHERE 1=1 LIMIT ? OFFSET ?) AS `sub`
+prisma:query SELECT `main`.`SiteVisit`.`id`, `main`.`SiteVisit`.`ipAddress`, `main`.`SiteVisit`.`createdAt` FROM `main`.`SiteVisit` WHERE 1=1 ORDER BY `main`.`SiteVisit`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query INSERT INTO `main`.`SiteVisit` (`id`, `ipAddress`, `createdAt`) VALUES (?,?,?) RETURNING `id` AS `id`, `ipAddress` AS `ipAddress`, `createdAt` AS `createdAt`
+ GET /admin 200 in 184ms (next.js: 8ms, application-code: 176ms)
