@@ -1,0 +1,74 @@
+
+> style-arena@0.1.0 dev
+> next dev
+
+▲ Next.js 16.3.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+✓ Ready in 542ms
+✓ Running next.config.ts took 48ms
+
+○ Compiling /battle ...
+ HEAD /battle 200 in 4.8s (next.js: 4.4s, application-code: 426ms)
+prisma:query INSERT INTO `main`.`SiteVisit` (`id`, `ipAddress`, `createdAt`) VALUES (?,?,?) RETURNING `id` AS `id`, `ipAddress` AS `ipAddress`, `createdAt` AS `createdAt`
+prisma:query SELECT 1
+prisma:query INSERT INTO `main`.`SiteVisit` (`id`, `ipAddress`, `createdAt`) VALUES (?,?,?) RETURNING `id` AS `id`, `ipAddress` AS `ipAddress`, `createdAt` AS `createdAt`
+ GET /battle 200 in 94ms (next.js: 11ms, application-code: 84ms)
+prisma:query SELECT COUNT(*) FROM (SELECT `main`.`Post`.`id` FROM `main`.`Post` WHERE 1=1 LIMIT ? OFFSET ?) AS `sub`
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE 1=1 ORDER BY `main`.`Post`.`id` ASC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`username`, `main`.`User`.`image` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE 1=1 LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`username`, `main`.`User`.`image` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
+ POST /battle 200 in 93ms (next.js: 12ms, application-code: 81ms)
+  └─ ƒ getRandomPair() in 16ms src/actions/battle.ts
+prisma:query SELECT COUNT(*) FROM (SELECT `main`.`Post`.`id` FROM `main`.`Post` WHERE 1=1 LIMIT ? OFFSET ?) AS `sub`
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE 1=1 ORDER BY `main`.`Post`.`id` ASC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`username`, `main`.`User`.`image` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE 1=1 ORDER BY `main`.`Post`.`id` ASC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`username`, `main`.`User`.`image` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
+ POST /battle 200 in 31ms (next.js: 5ms, application-code: 26ms)
+  └─ ƒ getRandomPair() in 14ms src/actions/battle.ts
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE (`main`.`Post`.`id` = ? AND 1=1) LIMIT ? OFFSET ?
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE (`main`.`Post`.`id` = ? AND 1=1) LIMIT ? OFFSET ?
+prisma:query BEGIN IMMEDIATE
+prisma:query UPDATE `main`.`Post` SET `eloRating` = ?, `wins` = (`main`.`Post`.`wins` + ?) WHERE (`main`.`Post`.`id` = ? AND 1=1) RETURNING `id` AS `id`, `imageUrl` AS `imageUrl`, `caption` AS `caption`, `category` AS `category`, `eloRating` AS `eloRating`, `wins` AS `wins`, `losses` AS `losses`, `userId` AS `userId`, `createdAt` AS `createdAt`
+prisma:query UPDATE `main`.`Post` SET `eloRating` = ?, `losses` = (`main`.`Post`.`losses` + ?) WHERE (`main`.`Post`.`id` = ? AND 1=1) RETURNING `id` AS `id`, `imageUrl` AS `imageUrl`, `caption` AS `caption`, `category` AS `category`, `eloRating` AS `eloRating`, `wins` AS `wins`, `losses` AS `losses`, `userId` AS `userId`, `createdAt` AS `createdAt`
+prisma:query INSERT INTO `main`.`Vote` (`id`, `voterId`, `winnerId`, `loserId`, `createdAt`) VALUES (?,?,?,?,?) RETURNING `id` AS `id`, `voterId` AS `voterId`, `winnerId` AS `winnerId`, `loserId` AS `loserId`, `createdAt` AS `createdAt`
+prisma:query COMMIT
+prisma:query INSERT INTO `main`.`SiteVisit` (`id`, `ipAddress`, `createdAt`) VALUES (?,?,?) RETURNING `id` AS `id`, `ipAddress` AS `ipAddress`, `createdAt` AS `createdAt`
+ POST /battle 200 in 164ms (next.js: 24ms, application-code: 141ms)
+  └─ ƒ castVote("cmtoqdu3o0006tx07srhd40j7", "cmtoqdu3v000atx07krvs531y") in 55ms src/actions/battle.ts
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+prisma:query SELECT COUNT(*) FROM (SELECT `main`.`Post`.`id` FROM `main`.`Post` WHERE 1=1 LIMIT ? OFFSET ?) AS `sub`
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE 1=1 LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`username`, `main`.`User`.`image` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE 1=1 ORDER BY `main`.`Post`.`id` ASC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`username`, `main`.`User`.`image` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
+ POST /battle 200 in 41ms (next.js: 4ms, application-code: 37ms)
+  └─ ƒ getRandomPair() in 8ms src/actions/battle.ts
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+[browser] You're attempting to animate multiple children within AnimatePresence, but its mode is set to "wait". This will lead to odd visual behaviour.
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE 1=1 ORDER BY `main`.`Post`.`eloRating` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`username`, `main`.`User`.`image` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?,?,?) LIMIT ? OFFSET ?
+prisma:query INSERT INTO `main`.`SiteVisit` (`id`, `ipAddress`, `createdAt`) VALUES (?,?,?) RETURNING `id` AS `id`, `ipAddress` AS `ipAddress`, `createdAt` AS `createdAt`
+ GET /leaderboard 200 in 1172ms (next.js: 965ms, application-code: 206ms)
+prisma:query SELECT COUNT(*) FROM (SELECT `main`.`SiteVisit`.`id` FROM `main`.`SiteVisit` WHERE 1=1 LIMIT ? OFFSET ?) AS `sub`
+prisma:query SELECT COUNT(*) FROM (SELECT `main`.`User`.`id` FROM `main`.`User` WHERE 1=1 LIMIT ? OFFSET ?) AS `sub`
+prisma:query SELECT COUNT(*) FROM (SELECT `main`.`Vote`.`id` FROM `main`.`Vote` WHERE 1=1 LIMIT ? OFFSET ?) AS `sub`
+prisma:query SELECT COUNT(*) FROM (SELECT `main`.`Post`.`id` FROM `main`.`Post` WHERE 1=1 LIMIT ? OFFSET ?) AS `sub`
+prisma:query SELECT `main`.`SiteVisit`.`id`, `main`.`SiteVisit`.`ipAddress`, `main`.`SiteVisit`.`createdAt` FROM `main`.`SiteVisit` WHERE 1=1 ORDER BY `main`.`SiteVisit`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query INSERT INTO `main`.`SiteVisit` (`id`, `ipAddress`, `createdAt`) VALUES (?,?,?) RETURNING `id` AS `id`, `ipAddress` AS `ipAddress`, `createdAt` AS `createdAt`
+ GET /admin 200 in 770ms (next.js: 385ms, application-code: 385ms)

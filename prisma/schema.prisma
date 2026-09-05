@@ -1,5 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Prisma schema for VibeClash
 
 generator client {
   provider = "prisma-client-js"
@@ -11,106 +10,100 @@ datasource db {
 }
 
 model User {
-  id           String    @id @default(uuid())
-  username     String    @unique
-  name         String
-  email        String    @unique
-  avatar       String
-  bio          String?
-  styleTags    String    // Comma-separated strings, e.g. "Streetwear,Minimalist"
-  instagram    String?
-  createdAt    DateTime  @default(now())
+  id            String    @id @default(cuid())
+  name          String?
+  username      String?   @unique
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  bio           String?
+  createdAt     DateTime  @default(now())
 
-  photos       Photo[]
-  votes        Vote[]
-  likes        Like[]
-  comments     Comment[]
-  createdBattles Battle[] @relation("BattleCreator")
+  accounts      Account[]
+  sessions      Session[]
+  posts         Post[]
+  votes         Vote[]
+  comments      Comment[]
 }
 
-model Photo {
-  id           String    @id @default(uuid())
-  title        String
-  description  String?
-  imageUrl     String
-  category     String    // e.g. "Streetwear", "Formal", "Vintage", "High Fashion", "Minimalist"
-  outfitTags   String?   // Comma-separated brand/item tags, e.g. "Nike, Acne Studios, Vintage Blazer"
-  views        Int       @default(0)
-  createdAt    DateTime  @default(now())
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
   userId       String
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expires      DateTime
 
-  asPhotoA     Battle[]  @relation("PhotoA")
-  asPhotoB     Battle[]  @relation("PhotoB")
-  votes        Vote[]
-  likes        Like[]
-  comments     Comment[]
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model Battle {
-  id           String    @id @default(uuid())
-  title        String?
-  category     String?
-  createdAt    DateTime  @default(now())
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
 
-  photoAId     String
-  photoA       Photo     @relation("PhotoA", fields: [photoAId], references: [id], onDelete: Cascade)
+  @@unique([identifier, token])
+}
 
-  photoBId     String
-  photoB       Photo     @relation("PhotoB", fields: [photoBId], references: [id], onDelete: Cascade)
+model Post {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  caption   String?
+  category  String?  @default("Streetwear")
+  eloRating Int      @default(1200)
+  wins      Int      @default(0)
+  losses    Int      @default(0)
+  userId    String
+  createdAt DateTime @default(now())
 
-  creatorId    String?
-  creator      User?     @relation("BattleCreator", fields: [creatorId], references: [id], onDelete: SetNull)
-
-  votes        Vote[]
-  likes        Like[]
-  comments     Comment[]
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  winningVotes   Vote[]    @relation("WinnerPost")
+  losingVotes    Vote[]    @relation("LoserPost")
+  comments       Comment[]
 }
 
 model Vote {
-  id           String    @id @default(uuid())
-  createdAt    DateTime  @default(now())
+  id        String   @id @default(cuid())
+  voterId   String?
+  winnerId  String
+  loserId   String
+  createdAt DateTime @default(now())
 
-  userId       String
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  battleId     String
-  battle       Battle    @relation(fields: [battleId], references: [id], onDelete: Cascade)
-
-  selectedPhotoId String
-  selectedPhoto Photo    @relation(fields: [selectedPhotoId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, battleId])
-}
-
-model Like {
-  id           String    @id @default(uuid())
-  createdAt    DateTime  @default(now())
-
-  userId       String
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  photoId      String?
-  photo        Photo?    @relation(fields: [photoId], references: [id], onDelete: Cascade)
-
-  battleId     String?
-  battle       Battle?   @relation(fields: [battleId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, photoId, battleId])
+  voter  User? @relation(fields: [voterId], references: [id], onDelete: SetNull)
+  winner Post  @relation("WinnerPost", fields: [winnerId], references: [id], onDelete: Cascade)
+  loser  Post  @relation("LoserPost", fields: [loserId], references: [id], onDelete: Cascade)
 }
 
 model Comment {
-  id           String    @id @default(uuid())
-  content      String
-  createdAt    DateTime  @default(now())
+  id        String   @id @default(cuid())
+  content   String
+  postId    String
+  userId    String
+  createdAt DateTime @default(now())
 
-  userId       String
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
 
-  photoId      String?
-  photo        Photo?    @relation(fields: [photoId], references: [id], onDelete: Cascade)
-
-  battleId     String?
-  battle       Battle?   @relation(fields: [battleId], references: [id], onDelete: Cascade)
+model SiteVisit {
+  id        String   @id @default(cuid())
+  ipAddress String?
+  createdAt DateTime @default(now())
 }
