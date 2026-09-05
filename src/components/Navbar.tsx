@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -9,18 +9,49 @@ import {
   PlusSquare,
   ShieldAlert,
   Sparkles,
+  User,
+  LogIn,
+  LogOut,
 } from 'lucide-react';
 import UploadModal from './UploadModal';
+import AuthModal from './AuthModal';
+import { UserSession } from '@/app/actions/auth';
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [user, setUser] = useState<UserSession | null>(null);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem('vibeclash_user');
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (e) {
+        console.error('Error parsing stored user:', e);
+      }
+    }
+  }, []);
+
+  const handleLoginSuccess = (sessionUser: UserSession) => {
+    setUser(sessionUser);
+    localStorage.setItem('vibeclash_user', JSON.stringify(sessionUser));
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('vibeclash_user');
+  };
 
   const navLinks = [
     { href: '/battle', label: '1v1 Battle', icon: Swords },
     { href: '/leaderboard', label: 'Leaderboard', icon: Trophy },
-    { href: '/admin', label: 'Admin Metrics', icon: ShieldAlert },
   ];
+
+  if (user?.role === 'ADMIN') {
+    navLinks.push({ href: '/admin', label: 'Admin Metrics', icon: ShieldAlert });
+  }
 
   return (
     <>
@@ -59,15 +90,42 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Action Button */}
-          <div className="flex items-center gap-3">
+          {/* Action Buttons & Profile Controls */}
+          <div className="flex items-center gap-2.5">
             <button
               onClick={() => setIsUploadOpen(true)}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-extrabold uppercase tracking-wider text-white bg-gradient-to-r from-fuchsia-600 via-pink-500 to-cyan-500 hover:brightness-110 transition-all shadow-lg neon-glow-violet active:scale-95"
+              className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-extrabold uppercase tracking-wider text-white bg-gradient-to-r from-fuchsia-600 via-pink-500 to-cyan-500 hover:brightness-110 transition-all shadow-lg neon-glow-violet active:scale-95"
             >
               <PlusSquare className="w-4 h-4" />
-              <span>Post Vibe</span>
+              <span className="hidden sm:inline">Post Vibe</span>
             </button>
+
+            {user ? (
+              <div className="flex items-center gap-2">
+                <Link
+                  href={`/profile`}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900 border border-zinc-700 text-xs font-bold text-white hover:border-fuchsia-500 transition"
+                >
+                  <User className="w-3.5 h-3.5 text-fuchsia-400" />
+                  <span>@{user.username}</span>
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  title="Logout"
+                  className="p-2 rounded-full text-zinc-400 hover:text-red-400 hover:bg-zinc-800 transition"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsAuthOpen(true)}
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-xs font-bold text-zinc-300 hover:text-white transition"
+              >
+                <LogIn className="w-3.5 h-3.5" />
+                <span>Login</span>
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -91,12 +149,31 @@ export default function Navbar() {
             </Link>
           );
         })}
+        {user && (
+          <Link
+            href="/profile"
+            className={`flex flex-col items-center gap-1 p-2 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all ${
+              pathname === '/profile' ? 'text-fuchsia-400 bg-fuchsia-500/10' : 'text-zinc-400'
+            }`}
+          >
+            <User className="w-5 h-5" />
+            <span>Profile</span>
+          </Link>
+        )}
       </div>
 
       {/* Upload Modal */}
       <UploadModal
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}
+        userId={user?.id}
+      />
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={isAuthOpen}
+        onClose={() => setIsAuthOpen(false)}
+        onLoginSuccess={handleLoginSuccess}
       />
     </>
   );

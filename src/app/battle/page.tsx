@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Swords, Flame, Sparkles, RefreshCw, Trophy, Zap, ThumbsUp } from 'lucide-react';
 import { getRandomPair, castVote, PostWithUser } from '@/app/actions/battle';
@@ -16,45 +16,95 @@ export default function BattlePage() {
     loserElo: number;
   } | null>(null);
 
-  const fetchPair = async () => {
-    setLoading(true);
+  // Background pre-fetched next pair for sub-100ms instant transitions
+  const nextPairRef = useRef<[PostWithUser, PostWithUser] | null>(null);
+
+  const prefetchNextPair = async () => {
     try {
-      const data = await getRandomPair();
-      setPair(data);
+      const nextData = await getRandomPair();
+      if (nextData) {
+        nextPairRef.current = nextData;
+        // Pre-load images into browser memory cache
+        const img1 = new Image();
+        img1.src = nextData[0].imageUrl;
+        const img2 = new Image();
+        img2.src = nextData[1].imageUrl;
+      }
     } catch (err) {
-      console.error('Failed to load battle pair:', err);
-    } finally {
+      console.error('Failed to pre-fetch next pair:', err);
+    }
+  };
+
+  const fetchPair = async (isInitial = false) => {
+    if (isInitial) setLoading(true);
+
+    if (nextPairRef.current) {
+      setPair(nextPairRef.current);
+      nextPairRef.current = null;
       setLoading(false);
+      // Pre-fetch the following pair immediately
+      prefetchNextPair();
+    } else {
+      try {
+        const data = await getRandomPair();
+        setPair(data);
+        prefetchNextPair();
+      } catch (err) {
+        console.error('Failed to load battle pair:', err);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
-    fetchPair();
+    fetchPair(true);
   }, []);
 
   const handleVote = async (winnerId: string, loserId: string) => {
     if (votingId || !pair) return;
 
     setVotingId(winnerId);
-    const res = await castVote(winnerId, loserId);
 
-    if (res.success) {
-      setStreak((prev) => prev + 1);
+    // Optimistic UI update
+    const winnerPost = pair.find((p) => p.id === winnerId);
+    const loserPost = pair.find((p) => p.id === loserId);
+
+    if (winnerPost && loserPost) {
+      // Optimistic Elo adjustment
+      const estimatedWinnerElo = winnerPost.eloRating + 16;
+      const estimatedLoserElo = Math.max(100, loserPost.eloRating - 16);
+
       setRecentResult({
         winnerId,
-        winnerElo: res.winnerElo,
-        loserElo: res.loserElo,
+        winnerElo: estimatedWinnerElo,
+        loserElo: estimatedLoserElo,
       });
-
-      // Brief animation pause before smooth Pair slide
-      setTimeout(() => {
-        setVotingId(null);
-        setRecentResult(null);
-        fetchPair();
-      }, 700);
-    } else {
-      setVotingId(null);
     }
+
+    setStreak((prev) => prev + 1);
+
+    // Trigger server action in background
+    castVote(winnerId, loserId).then((res) => {
+      if (res.success) {
+        setRecentResult((prev) =>
+          prev
+            ? {
+                ...prev,
+                winnerElo: res.winnerElo,
+                loserElo: res.loserElo,
+              }
+            : null
+        );
+      }
+    });
+
+    // Instant smooth transition to next pre-fetched pair
+    setTimeout(() => {
+      setVotingId(null);
+      setRecentResult(null);
+      fetchPair();
+    }, 400);
   };
 
   return (
@@ -126,7 +176,7 @@ export default function BattlePage() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, y: 50, scale: 0.95 }}
                   whileHover={{ scale: 1.02, y: -4 }}
-                  transition={{ duration: 0.35, ease: 'easeOut' }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
                   onClick={() => handleVote(post.id, otherPost.id)}
                   className={`group relative cursor-pointer rounded-3xl overflow-hidden glass-card transition-all duration-300 ${
                     isSelected
@@ -227,7 +277,7 @@ export default function BattlePage() {
       {/* Skip Button */}
       <div className="mt-10 text-center">
         <button
-          onClick={fetchPair}
+          onClick={() => fetchPair(false)}
           disabled={loading}
           className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs font-extrabold uppercase tracking-widest text-zinc-300 glass-panel hover:bg-white/10 hover:text-white border border-white/10 transition active:scale-95 disabled:opacity-50"
         >

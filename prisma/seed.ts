@@ -5,6 +5,21 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Seeding VibeClash database...');
 
+  // Create admin user
+  const adminUser = await prisma.user.upsert({
+    where: { username: 'admin' },
+    update: {},
+    create: {
+      username: 'admin',
+      name: 'VibeClash Admin',
+      email: 'admin@vibeclash.io',
+      password: 'adminpassword123',
+      role: 'ADMIN',
+      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400',
+      bio: 'System Administrator & Curator ⚡',
+    },
+  });
+
   // Create demo users
   const user1 = await prisma.user.upsert({
     where: { username: 'kai_vibe' },
@@ -13,6 +28,8 @@ async function main() {
       username: 'kai_vibe',
       name: 'Kai Vance',
       email: 'kai@vibeclash.io',
+      password: 'password123',
+      role: 'USER',
       image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400',
       bio: 'Cyberpunk Aesthetic & Streetwear Enthusiast ⚡',
     },
@@ -25,6 +42,8 @@ async function main() {
       username: 'aria_fits',
       name: 'Aria Chen',
       email: 'aria@vibeclash.io',
+      password: 'password123',
+      role: 'USER',
       image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=400',
       bio: 'Minimalist Tokyo Street Fashion 🎌',
     },
@@ -37,6 +56,8 @@ async function main() {
       username: 'neo_drip',
       name: 'Neo Rivera',
       email: 'neo@vibeclash.io',
+      password: 'password123',
+      role: 'USER',
       image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400',
       bio: 'Y2K Vintage & High Fashion Curator 💎',
     },

@@ -12,9 +12,10 @@ datasource db {
 model User {
   id            String    @id @default(cuid())
   name          String?
-  username      String?   @unique
+  username      String    @unique
   email         String?   @unique
-  emailVerified DateTime?
+  password      String?
+  role          String    @default("USER") // "USER" or "ADMIN"
   image         String?
   bio           String?
   createdAt     DateTime  @default(now())
@@ -77,6 +78,9 @@ model Post {
   winningVotes   Vote[]    @relation("WinnerPost")
   losingVotes    Vote[]    @relation("LoserPost")
   comments       Comment[]
+
+  @@index([eloRating])
+  @@index([userId])
 }
 
 model Vote {
