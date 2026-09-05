@@ -5,14 +5,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import {
-  Swords,
+  Zap,
   Heart,
   MessageSquare,
   Share2,
   CheckCircle2,
   Sparkles,
   Tag,
-  ChevronRight,
   Send,
   X,
   Copy,
@@ -87,7 +86,6 @@ export function HeadToHeadBattleCard({ battle, onVoteSuccess }: HeadToHeadBattle
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  // Calculate vote totals and percentages
   const userVote = currentUser ? votesList.find((v) => v.userId === currentUser.id) : null;
   const hasVoted = Boolean(userVote);
 
@@ -100,7 +98,7 @@ export function HeadToHeadBattleCard({ battle, onVoteSuccess }: HeadToHeadBattle
 
   const handleVote = async (selectedPhotoId: string) => {
     if (!currentUser) {
-      alert('Please select or create an account persona using the switcher in the header to vote.');
+      alert('Please select or create a persona in the top header to vote on fits.');
       return;
     }
 
@@ -118,14 +116,12 @@ export function HeadToHeadBattleCard({ battle, onVoteSuccess }: HeadToHeadBattle
       });
 
       if (res.ok) {
-        // Trigger celebratory confetti
         confetti({
-          particleCount: 50,
-          spread: 60,
-          origin: { y: 0.7 },
+          particleCount: 60,
+          spread: 70,
+          origin: { y: 0.6 },
         });
 
-        // Optimistically update votes list
         setVotesList((prev) => {
           const filtered = prev.filter((v) => v.userId !== currentUser.id);
           return [...filtered, { id: Date.now().toString(), userId: currentUser.id, selectedPhotoId }];
@@ -142,7 +138,7 @@ export function HeadToHeadBattleCard({ battle, onVoteSuccess }: HeadToHeadBattle
 
   const handleToggleLike = async () => {
     if (!currentUser) {
-      alert('Please select an account persona to like.');
+      alert('Please select or create an account persona to like.');
       return;
     }
 
@@ -219,85 +215,86 @@ export function HeadToHeadBattleCard({ battle, onVoteSuccess }: HeadToHeadBattle
   };
 
   return (
-    <div className="rounded-3xl bg-neutral-950 border border-neutral-800/80 shadow-2xl overflow-hidden space-y-0">
-      {/* Header Banner */}
-      <div className="px-6 py-4 bg-neutral-900/60 border-b border-neutral-800/80 flex items-center justify-between">
+    <div className="rounded-3xl bg-neutral-950 border border-neutral-800/90 shadow-2xl overflow-hidden">
+      {/* Top Banner Header */}
+      <div className="px-4 sm:px-6 py-3 sm:py-4 bg-neutral-900/80 border-b border-neutral-800/80 flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2">
-          <span className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20">
-            <Swords className="w-4 h-4" />
+          <span className="p-1.5 rounded-lg bg-pink-500/10 text-pink-400 border border-pink-500/20">
+            <Zap className="w-4 h-4 fill-pink-400" />
           </span>
           <div>
-            <h3 className="text-sm font-bold text-white tracking-wide">{battle.title || 'Head-to-Head Battle'}</h3>
-            <span className="text-[10px] font-mono uppercase text-neutral-400">
-              {battle.category || 'Comparison Arena'}
+            <h3 className="text-xs sm:text-sm font-bold text-white tracking-wide">{battle.title || 'Drip Matchup'}</h3>
+            <span className="text-[10px] font-mono uppercase text-pink-400 font-semibold">
+              {battle.category || 'Battle Arena'}
             </span>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 text-xs font-mono text-neutral-400">
-          <span>{totalVotes} total votes</span>
+        <div className="text-[11px] font-mono text-neutral-400 bg-neutral-900 px-2.5 py-1 rounded-full border border-neutral-800">
+          {totalVotes} {totalVotes === 1 ? 'vote' : 'votes'}
         </div>
       </div>
 
-      {/* Side-by-Side Visual Voting Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 relative gap-0 bg-neutral-900">
-        {/* VS Badge Center */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-black border-2 border-neutral-700 shadow-2xl text-amber-400 font-extrabold text-xs font-mono tracking-wider">
+      {/* Side-by-Side Responsive Visual Voting Grid (Stacked on Mobile, 2 Columns on MD+) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 relative bg-black">
+        {/* VS Badge Center Overlay */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 hidden md:flex items-center justify-center w-11 h-11 rounded-full bg-black border-2 border-pink-500/50 shadow-2xl text-pink-400 font-black text-xs font-mono tracking-wider">
           VS
         </div>
 
-        {/* --- OPTION A --- */}
-        <div className="relative group border-b md:border-b-0 md:border-r border-neutral-800 flex flex-col justify-between overflow-hidden">
-          {/* Image */}
-          <div className="relative aspect-[3/4] w-full bg-neutral-950 overflow-hidden">
+        {/* --- LOOK A --- */}
+        <div className="relative group border-b md:border-b-0 md:border-r border-neutral-800 flex flex-col justify-between">
+          <div className="relative aspect-[3/4] sm:aspect-[4/5] md:aspect-[3/4] w-full bg-neutral-950 overflow-hidden">
             <Image
               src={battle.photoA.imageUrl}
               alt={battle.photoA.title}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent" />
 
             {/* User tag */}
             <Link
               href={`/u/${battle.photoA.user.username}`}
-              className="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 hover:border-white/30 transition-all text-xs text-white"
+              className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 hover:border-pink-500/50 transition-all text-xs text-white"
             >
-              <div className="relative w-5 h-5 rounded-full overflow-hidden">
+              <div className="relative w-4 h-4 sm:w-5 sm:h-5 rounded-full overflow-hidden">
                 <Image src={battle.photoA.user.avatar} alt={battle.photoA.user.name} fill className="object-cover" />
               </div>
-              <span className="font-medium">@{battle.photoA.user.username}</span>
+              <span className="font-mono text-[11px]">@{battle.photoA.user.username}</span>
             </Link>
 
             {/* Category tag */}
-            <span className="absolute top-4 right-4 z-10 px-2.5 py-1 rounded-full bg-neutral-900/80 backdrop-blur-md text-[10px] font-mono text-neutral-300 border border-white/10">
+            <span className="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-full bg-neutral-900/80 backdrop-blur-md text-[10px] font-mono text-neutral-300 border border-white/10">
               {battle.photoA.category}
             </span>
 
-            {/* Look Details overlay at bottom */}
-            <div className="absolute bottom-4 left-4 right-4 z-10 space-y-2">
-              <h4 className="text-lg font-bold text-white leading-tight drop-shadow-md">{battle.photoA.title}</h4>
+            {/* Look Details Overlay */}
+            <div className="absolute bottom-3 left-3 right-3 z-10 space-y-1">
+              <h4 className="text-base sm:text-lg font-bold text-white leading-tight drop-shadow-md">
+                {battle.photoA.title}
+              </h4>
               {battle.photoA.outfitTags && (
-                <p className="text-xs text-neutral-300 flex items-center gap-1 font-mono truncate">
-                  <Tag className="w-3 h-3 text-neutral-400" /> {battle.photoA.outfitTags}
+                <p className="text-[11px] text-neutral-300 flex items-center gap-1 font-mono truncate">
+                  <Tag className="w-3 h-3 text-pink-400 flex-shrink-0" /> {battle.photoA.outfitTags}
                 </p>
               )}
             </div>
           </div>
 
-          {/* Voting Action / Percentage Progress Bar A */}
-          <div className="p-4 bg-neutral-950 border-t border-neutral-800/60 space-y-3">
+          {/* Voting Action / Progress Bar A */}
+          <div className="p-3 sm:p-4 bg-neutral-950 border-t border-neutral-900 space-y-2.5">
             {hasVoted && (
               <div className="space-y-1">
                 <div className="flex items-center justify-between text-xs font-mono">
-                  <span className={userVote?.selectedPhotoId === battle.photoA.id ? 'text-amber-400 font-bold flex items-center gap-1' : 'text-neutral-400'}>
+                  <span className={userVote?.selectedPhotoId === battle.photoA.id ? 'text-pink-400 font-bold flex items-center gap-1' : 'text-neutral-400'}>
                     {userVote?.selectedPhotoId === battle.photoA.id && <CheckCircle2 className="w-3.5 h-3.5" />}
-                    {percentA}% Votes ({votesForA})
+                    {percentA}% Drip Rating ({votesForA})
                   </span>
                 </div>
                 <div className="w-full bg-neutral-900 h-2.5 rounded-full overflow-hidden border border-neutral-800">
                   <div
-                    className="bg-gradient-to-r from-amber-500 to-amber-300 h-full transition-all duration-1000 ease-out"
+                    className="bg-gradient-to-r from-pink-500 to-rose-400 h-full transition-all duration-1000 ease-out"
                     style={{ width: `${percentA}%` }}
                   />
                 </div>
@@ -307,70 +304,71 @@ export function HeadToHeadBattleCard({ battle, onVoteSuccess }: HeadToHeadBattle
             <button
               onClick={() => handleVote(battle.photoA.id)}
               disabled={isSubmittingVote}
-              className={`w-full py-3 rounded-xl font-bold text-xs tracking-wider uppercase transition-all flex items-center justify-center gap-2 ${
+              className={`w-full py-3 rounded-xl font-bold text-xs tracking-wider uppercase transition-all flex items-center justify-center gap-2 active:scale-95 ${
                 userVote?.selectedPhotoId === battle.photoA.id
-                  ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20'
-                  : 'bg-neutral-900 hover:bg-neutral-800 text-white border border-neutral-800 hover:border-neutral-700'
+                  ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg shadow-pink-500/25'
+                  : 'bg-neutral-900 hover:bg-neutral-800 text-white border border-neutral-800'
               }`}
             >
               <Sparkles className="w-3.5 h-3.5" />
-              {userVote?.selectedPhotoId === battle.photoA.id ? 'Voted Look A' : 'Vote Look A'}
+              {userVote?.selectedPhotoId === battle.photoA.id ? 'Voted Fit A' : 'Vote Fit A'}
             </button>
           </div>
         </div>
 
-        {/* --- OPTION B --- */}
-        <div className="relative group flex flex-col justify-between overflow-hidden">
-          {/* Image */}
-          <div className="relative aspect-[3/4] w-full bg-neutral-950 overflow-hidden">
+        {/* --- LOOK B --- */}
+        <div className="relative group flex flex-col justify-between">
+          <div className="relative aspect-[3/4] sm:aspect-[4/5] md:aspect-[3/4] w-full bg-neutral-950 overflow-hidden">
             <Image
               src={battle.photoB.imageUrl}
               alt={battle.photoB.title}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent" />
 
             {/* User tag */}
             <Link
               href={`/u/${battle.photoB.user.username}`}
-              className="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 hover:border-white/30 transition-all text-xs text-white"
+              className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 hover:border-pink-500/50 transition-all text-xs text-white"
             >
-              <div className="relative w-5 h-5 rounded-full overflow-hidden">
+              <div className="relative w-4 h-4 sm:w-5 sm:h-5 rounded-full overflow-hidden">
                 <Image src={battle.photoB.user.avatar} alt={battle.photoB.user.name} fill className="object-cover" />
               </div>
-              <span className="font-medium">@{battle.photoB.user.username}</span>
+              <span className="font-mono text-[11px]">@{battle.photoB.user.username}</span>
             </Link>
 
             {/* Category tag */}
-            <span className="absolute top-4 right-4 z-10 px-2.5 py-1 rounded-full bg-neutral-900/80 backdrop-blur-md text-[10px] font-mono text-neutral-300 border border-white/10">
+            <span className="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-full bg-neutral-900/80 backdrop-blur-md text-[10px] font-mono text-neutral-300 border border-white/10">
               {battle.photoB.category}
             </span>
 
-            {/* Look Details overlay at bottom */}
-            <div className="absolute bottom-4 left-4 right-4 z-10 space-y-2">
-              <h4 className="text-lg font-bold text-white leading-tight drop-shadow-md">{battle.photoB.title}</h4>
+            {/* Look Details Overlay */}
+            <div className="absolute bottom-3 left-3 right-3 z-10 space-y-1">
+              <h4 className="text-base sm:text-lg font-bold text-white leading-tight drop-shadow-md">
+                {battle.photoB.title}
+              </h4>
               {battle.photoB.outfitTags && (
-                <p className="text-xs text-neutral-300 flex items-center gap-1 font-mono truncate">
-                  <Tag className="w-3 h-3 text-neutral-400" /> {battle.photoB.outfitTags}
+                <p className="text-[11px] text-neutral-300 flex items-center gap-1 font-mono truncate">
+                  <Tag className="w-3 h-3 text-pink-400 flex-shrink-0" /> {battle.photoB.outfitTags}
                 </p>
               )}
             </div>
           </div>
 
-          {/* Voting Action / Percentage Progress Bar B */}
-          <div className="p-4 bg-neutral-950 border-t border-neutral-800/60 space-y-3">
+          {/* Voting Action / Progress Bar B */}
+          <div className="p-3 sm:p-4 bg-neutral-950 border-t border-neutral-900 space-y-2.5">
             {hasVoted && (
               <div className="space-y-1">
                 <div className="flex items-center justify-between text-xs font-mono">
-                  <span className={userVote?.selectedPhotoId === battle.photoB.id ? 'text-amber-400 font-bold flex items-center gap-1' : 'text-neutral-400'}>
+                  <span className={userVote?.selectedPhotoId === battle.photoB.id ? 'text-pink-400 font-bold flex items-center gap-1' : 'text-neutral-400'}>
                     {userVote?.selectedPhotoId === battle.photoB.id && <CheckCircle2 className="w-3.5 h-3.5" />}
-                    {percentB}% Votes ({votesForB})
+                    {percentB}% Drip Rating ({votesForB})
                   </span>
                 </div>
                 <div className="w-full bg-neutral-900 h-2.5 rounded-full overflow-hidden border border-neutral-800">
                   <div
-                    className="bg-gradient-to-r from-amber-500 to-amber-300 h-full transition-all duration-1000 ease-out"
+                    className="bg-gradient-to-r from-pink-500 to-rose-400 h-full transition-all duration-1000 ease-out"
                     style={{ width: `${percentB}%` }}
                   />
                 </div>
@@ -380,21 +378,21 @@ export function HeadToHeadBattleCard({ battle, onVoteSuccess }: HeadToHeadBattle
             <button
               onClick={() => handleVote(battle.photoB.id)}
               disabled={isSubmittingVote}
-              className={`w-full py-3 rounded-xl font-bold text-xs tracking-wider uppercase transition-all flex items-center justify-center gap-2 ${
+              className={`w-full py-3 rounded-xl font-bold text-xs tracking-wider uppercase transition-all flex items-center justify-center gap-2 active:scale-95 ${
                 userVote?.selectedPhotoId === battle.photoB.id
-                  ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20'
-                  : 'bg-neutral-900 hover:bg-neutral-800 text-white border border-neutral-800 hover:border-neutral-700'
+                  ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg shadow-pink-500/25'
+                  : 'bg-neutral-900 hover:bg-neutral-800 text-white border border-neutral-800'
               }`}
             >
               <Sparkles className="w-3.5 h-3.5" />
-              {userVote?.selectedPhotoId === battle.photoB.id ? 'Voted Look B' : 'Vote Look B'}
+              {userVote?.selectedPhotoId === battle.photoB.id ? 'Voted Fit B' : 'Vote Fit B'}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Card Footer Social Actions (Like, Comment, Share) */}
-      <div className="px-6 py-3 bg-neutral-950 border-t border-neutral-800/80 flex items-center justify-between">
+      {/* Social Actions (Like, Comment, Share) */}
+      <div className="px-4 sm:px-6 py-3 bg-neutral-950 border-t border-neutral-800/80 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
             onClick={handleToggleLike}
@@ -424,30 +422,26 @@ export function HeadToHeadBattleCard({ battle, onVoteSuccess }: HeadToHeadBattle
         </button>
       </div>
 
-      {/* --- COMMENTS MODAL --- */}
+      {/* COMMENTS MODAL */}
       {isCommentOpen && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-neutral-950 border border-neutral-800 rounded-3xl w-full max-w-lg p-6 shadow-2xl relative flex flex-col max-h-[85vh]">
-            <div className="flex items-center justify-between border-b border-neutral-800 pb-4 mb-4">
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                <MessageSquare className="w-5 h-5 text-amber-400" />
-                Battle Discussion
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4">
+          <div className="bg-neutral-950 border border-neutral-800 rounded-3xl w-full max-w-lg p-5 shadow-2xl relative flex flex-col max-h-[85vh]">
+            <div className="flex items-center justify-between border-b border-neutral-800 pb-3 mb-3">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <MessageSquare className="w-4 h-4 text-pink-400" />
+                Drip Discussion
               </h3>
-              <button
-                onClick={() => setIsCommentOpen(false)}
-                className="text-neutral-400 hover:text-white text-xl leading-none"
-              >
+              <button onClick={() => setIsCommentOpen(false)} className="text-neutral-400 hover:text-white">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Comments List */}
-            <div className="flex-1 overflow-y-auto space-y-4 pr-1 mb-4">
+            <div className="flex-1 overflow-y-auto space-y-3 pr-1 mb-3">
               {isLoadingComments ? (
-                <div className="text-center py-8 text-neutral-500 text-xs font-mono">Loading feedback...</div>
+                <div className="text-center py-6 text-neutral-500 text-xs font-mono">Loading feedback...</div>
               ) : comments.length === 0 ? (
-                <div className="text-center py-8 text-neutral-500 text-xs font-mono">
-                  No comments yet. Start the style debate!
+                <div className="text-center py-6 text-neutral-500 text-xs font-mono">
+                  No comments yet. Drop your opinion!
                 </div>
               ) : (
                 comments.map((comment) => (
@@ -469,20 +463,19 @@ export function HeadToHeadBattleCard({ battle, onVoteSuccess }: HeadToHeadBattle
               )}
             </div>
 
-            {/* Comment Form */}
             <form onSubmit={handleAddComment} className="flex gap-2 border-t border-neutral-800 pt-3">
               <input
                 type="text"
-                placeholder={currentUser ? 'Write your style verdict...' : 'Select a persona above to comment'}
+                placeholder={currentUser ? 'Say something about this fit...' : 'Select a persona above to comment'}
                 disabled={!currentUser}
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
-                className="flex-1 bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-neutral-500 disabled:opacity-50"
+                className="flex-1 bg-neutral-900 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-neutral-500 disabled:opacity-50"
               />
               <button
                 type="submit"
                 disabled={!currentUser || !newComment.trim()}
-                className="px-4 py-2.5 bg-white text-black font-bold text-xs rounded-xl hover:bg-neutral-200 transition-colors disabled:opacity-50 flex items-center gap-1"
+                className="px-4 py-2.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-xs rounded-xl hover:opacity-90 transition-all disabled:opacity-50 flex items-center gap-1"
               >
                 <Send className="w-3.5 h-3.5" />
               </button>
@@ -491,23 +484,21 @@ export function HeadToHeadBattleCard({ battle, onVoteSuccess }: HeadToHeadBattle
         </div>
       )}
 
-      {/* --- SHARE MODAL --- */}
+      {/* SHARE MODAL */}
       {isShareOpen && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-neutral-950 border border-neutral-800 rounded-3xl w-full max-w-md p-6 shadow-2xl relative space-y-4">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4">
+          <div className="bg-neutral-950 border border-neutral-800 rounded-3xl w-full max-w-md p-5 shadow-2xl relative space-y-4">
             <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
               <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Share2 className="w-4 h-4 text-amber-400" />
-                Share Matchup
+                <Share2 className="w-4 h-4 text-pink-400" />
+                Share Drip Battle
               </h3>
               <button onClick={() => setIsShareOpen(false)} className="text-neutral-400 hover:text-white">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <p className="text-xs text-neutral-400">
-              Invite friends to vote on this head-to-head comparison battle:
-            </p>
+            <p className="text-xs text-neutral-400">Share direct link with friends to gather public votes:</p>
 
             <div className="flex items-center gap-2 bg-neutral-900 border border-neutral-800 rounded-xl p-2">
               <input
