@@ -1,12 +1,5 @@
-'use client';
+import { redirect } from 'next/navigation';
 
-import { AuthProvider } from '@/context/AuthContext';
-import { ArenaHomeView } from '@/components/ArenaHomeView';
-
-export default function Home() {
-  return (
-    <AuthProvider>
-      <ArenaHomeView />
-    </AuthProvider>
-  );
+export default function HomePage() {
+  redirect('/battle');
 }
