@@ -5,10 +5,26 @@
 ▲ Next.js 16.3.4 (Turbopack)
 - Local:         http://localhost:3000
 - Network:       http://192.168.0.2:3000
-✓ Ready in 590ms
-✓ Running next.config.ts took 50ms
+✓ Ready in 770ms
+✓ Running next.config.ts took 79ms
 
-prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE 1=1 ORDER BY `main`.`Post`.`eloRating` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`username`, `main`.`User`.`image` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?,?,?) LIMIT ? OFFSET ?
+ GET / 307 in 750ms (next.js: 358ms, application-code: 393ms)
 prisma:query INSERT INTO `main`.`SiteVisit` (`id`, `ipAddress`, `createdAt`) VALUES (?,?,?) RETURNING `id` AS `id`, `ipAddress` AS `ipAddress`, `createdAt` AS `createdAt`
- GET /leaderboard 200 in 3.6s (next.js: 3.1s, application-code: 495ms)
+prisma:query INSERT INTO `main`.`SiteVisit` (`id`, `ipAddress`, `createdAt`) VALUES (?,?,?) RETURNING `id` AS `id`, `ipAddress` AS `ipAddress`, `createdAt` AS `createdAt`
+ GET /battle 200 in 171ms (next.js: 25ms, application-code: 146ms)
+prisma:query INSERT INTO `main`.`SiteVisit` (`id`, `ipAddress`, `createdAt`) VALUES (?,?,?) RETURNING `id` AS `id`, `ipAddress` AS `ipAddress`, `createdAt` AS `createdAt`
+prisma:query SELECT COUNT(*) FROM (SELECT `main`.`Post`.`id` FROM `main`.`Post` WHERE 1=1 LIMIT ? OFFSET ?) AS `sub`
+ POST /battle 200 in 88ms (next.js: 17ms, application-code: 71ms)
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE 1=1 ORDER BY `main`.`Post`.`id` ASC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`username`, `main`.`User`.`image` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE 1=1 ORDER BY `main`.`Post`.`id` ASC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`username`, `main`.`User`.`image` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
+ GET /profile 200 in 260ms (next.js: 25ms, application-code: 234ms)
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`username`, `main`.`User`.`email`, `main`.`User`.`password`, `main`.`User`.`role`, `main`.`User`.`image`, `main`.`User`.`bio`, `main`.`User`.`createdAt` FROM `main`.`User` WHERE (`main`.`User`.`username` = ? AND 1=1) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE `main`.`Post`.`userId` IN (?) ORDER BY `main`.`Post`.`createdAt` DESC LIMIT ? OFFSET ?
+ POST /profile 200 in 20ms (next.js: 6ms, application-code: 14ms)
+  └─ ƒ getUserProfile("kai_vibe") in 3ms src/actions/auth.ts
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`name`, `main`.`User`.`username`, `main`.`User`.`email`, `main`.`User`.`password`, `main`.`User`.`role`, `main`.`User`.`image`, `main`.`User`.`bio`, `main`.`User`.`createdAt` FROM `main`.`User` WHERE (`main`.`User`.`username` = ? AND 1=1) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Post`.`id`, `main`.`Post`.`imageUrl`, `main`.`Post`.`caption`, `main`.`Post`.`category`, `main`.`Post`.`eloRating`, `main`.`Post`.`wins`, `main`.`Post`.`losses`, `main`.`Post`.`userId`, `main`.`Post`.`createdAt` FROM `main`.`Post` WHERE `main`.`Post`.`userId` IN (?) ORDER BY `main`.`Post`.`createdAt` DESC LIMIT ? OFFSET ?
+ POST /profile 200 in 16ms (next.js: 3ms, application-code: 13ms)
+  └─ ƒ getUserProfile("kai_vibe") in 2ms src/actions/auth.ts
