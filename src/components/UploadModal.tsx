@@ -22,7 +22,6 @@ export default function UploadModal({ isOpen, onClose, userId }: UploadModalProp
   const router = useRouter();
   const [imageUrl, setImageUrl] = useState('');
   const [caption, setCaption] = useState('');
-  const [category, setCategory] = useState('Streetwear');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadMode, setUploadMode] = useState<'file' | 'url'>('file');
 
@@ -56,7 +55,7 @@ export default function UploadModal({ isOpen, onClose, userId }: UploadModalProp
     const res = await createPost({
       imageUrl,
       caption,
-      category,
+      category: 'General',
       userId: targetUserId,
     });
 
@@ -68,7 +67,7 @@ export default function UploadModal({ isOpen, onClose, userId }: UploadModalProp
       onClose();
       router.refresh();
     } else {
-      alert('Failed to post vibe. Please try again.');
+      alert('Failed to post image. Please try again.');
     }
   };
 
@@ -81,7 +80,7 @@ export default function UploadModal({ isOpen, onClose, userId }: UploadModalProp
         <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-fuchsia-400" />
-            <h2 className="text-xl font-extrabold text-white">Upload Your Image Fit</h2>
+            <h2 className="text-xl font-extrabold text-white">Upload Image</h2>
           </div>
           <button
             onClick={onClose}
@@ -184,36 +183,16 @@ export default function UploadModal({ isOpen, onClose, userId }: UploadModalProp
 
           <div>
             <label className="block text-xs font-semibold uppercase text-zinc-400 mb-1.5">
-              Caption / Fit Details
+              Description
             </label>
             <input
               type="text"
               required
-              placeholder="e.g. Oversized Leather Fit & Cyberpunk Sneakers 🏎️"
+              placeholder="Enter description..."
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
               className="w-full px-4 py-2.5 bg-zinc-950 border border-zinc-800 rounded-xl text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-fuchsia-500 transition"
             />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold uppercase text-zinc-400 mb-1.5">
-              Aesthetic Category
-            </label>
-            <div className="relative">
-              <Tag className="absolute left-3 top-3 w-4 h-4 text-zinc-500" />
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-zinc-950 border border-zinc-800 rounded-xl text-sm text-white focus:outline-none focus:border-fuchsia-500 transition appearance-none"
-              >
-                <option value="Streetwear">Streetwear</option>
-                <option value="Cyberpunk">Cyberpunk</option>
-                <option value="Minimalist">Minimalist</option>
-                <option value="Vintage Y2K">Vintage Y2K</option>
-                <option value="High Fashion">High Fashion</option>
-              </select>
-            </div>
           </div>
 
           <div className="pt-2 flex justify-end gap-3">
@@ -229,7 +208,7 @@ export default function UploadModal({ isOpen, onClose, userId }: UploadModalProp
               disabled={isSubmitting || !imageUrl}
               className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 transition shadow-lg shadow-fuchsia-500/20 disabled:opacity-50"
             >
-              {isSubmitting ? 'Publishing...' : 'Publish Fit'}
+              {isSubmitting ? 'Uploading...' : 'Upload'}
             </button>
           </div>
         </form>

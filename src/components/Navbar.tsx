@@ -45,8 +45,8 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { href: '/battle', label: '1v1 Battle', icon: Swords },
-    { href: '/leaderboard', label: 'Leaderboard', icon: Trophy },
+    { href: '/battle', label: 'home', icon: Swords },
+    { href: '/leaderboard', label: 'leaderboard', icon: Trophy },
   ];
 
   if (user?.role === 'ADMIN') {
@@ -130,35 +130,54 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Mobile Bottom Navigation Bar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 glass-panel border-t border-white/10 px-4 py-2.5 flex justify-around items-center">
-        {navLinks.map((link) => {
-          const Icon = link.icon;
-          const isActive = pathname === link.href;
-
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`flex flex-col items-center gap-1 p-2 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all ${
-                isActive ? 'text-fuchsia-400 bg-fuchsia-500/10' : 'text-zinc-400'
-              }`}
-            >
-              <Icon className="w-5 h-5" />
-              <span>{link.label}</span>
-            </Link>
-          );
-        })}
-        {user && (
+      {/* Wireframe Bottom Navigation Bar (+ and Account icon) */}
+      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-md bg-zinc-950/90 border border-white/20 rounded-full px-6 py-2 shadow-2xl flex items-center justify-between backdrop-blur-lg">
+        {/* Nav links (home, leaderboard) */}
+        <div className="flex items-center gap-4 font-mono text-sm font-bold text-zinc-300">
           <Link
-            href="/profile"
-            className={`flex flex-col items-center gap-1 p-2 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all ${
-              pathname === '/profile' ? 'text-fuchsia-400 bg-fuchsia-500/10' : 'text-zinc-400'
+            href="/battle"
+            className={`hover:text-white transition ${
+              pathname === '/battle' ? 'text-fuchsia-400 font-extrabold' : ''
             }`}
           >
-            <User className="w-5 h-5" />
-            <span>Profile</span>
+            home
           </Link>
+          <Link
+            href="/leaderboard"
+            className={`hover:text-white transition ${
+              pathname === '/leaderboard' ? 'text-fuchsia-400 font-extrabold' : ''
+            }`}
+          >
+            leaderboard
+          </Link>
+        </div>
+
+        {/* Center Upload (+) Button */}
+        <button
+          onClick={() => setIsUploadOpen(true)}
+          className="w-10 h-10 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-black text-xl flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition"
+          title="Upload Image"
+        >
+          +
+        </button>
+
+        {/* Right Account / Login Icon */}
+        {user ? (
+          <Link
+            href="/profile"
+            className="w-10 h-10 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white font-mono font-black text-sm hover:border-fuchsia-500 transition"
+            title={user.username || 'Profile'}
+          >
+            {user.username ? user.username.charAt(0).toUpperCase() : 'A'}
+          </Link>
+        ) : (
+          <button
+            onClick={() => setIsAuthOpen(true)}
+            className="w-10 h-10 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white font-mono font-black text-sm hover:border-fuchsia-500 transition"
+            title="Login"
+          >
+            A
+          </button>
         )}
       </div>
 
